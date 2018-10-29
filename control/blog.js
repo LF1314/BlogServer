@@ -5,11 +5,9 @@ const router = express.Router()
 const auth =require('../control/auth')
 
 const blogdata = require('../model/blog')
-
+const userdata = require('../model/user')
 //发布博客
-
-router.post('/add',auth,async(req,res,next)=>{
-    
+router.post('/add',auth,async(req,res,next)=>{  
     let {
         corver,
         title,
@@ -18,6 +16,7 @@ router.post('/add',auth,async(req,res,next)=>{
         contentext,
         category,
         author,
+        linuxtime
     } = req.body
     try {
         const data = await blogdata.create({
@@ -27,12 +26,16 @@ router.post('/add',auth,async(req,res,next)=>{
             content,
             contentext,
             category,
-            author
+            author,
+            linuxtime
         })
+        let blogid = data._id 
+        const mes = await userdata.update({_id:author},{$push:{blogs:blogid}})
         res.json({
             code:200,
             msg:'发布成功！',
-            data
+            data,
+            mes
         })
     } catch (error) {
         res.json({
@@ -42,3 +45,51 @@ router.post('/add',auth,async(req,res,next)=>{
         
     }
 })
+
+//查询最新的文章
+router.get('/new',async(req,res,next)=>{
+
+   try {
+       let hotarticle = await blogdata.find()
+       .sort({_id:-1})
+       .limit(6)
+       res.json({
+           code:200,
+           msg:'success',
+           data:hotarticle
+       })
+   } catch (error) {
+       res.json({
+           code:400,
+           msg:'errror',
+           error
+       })
+   }
+})
+
+//获取文章详情
+router.get('/detail',async(req,res,next)=>{
+
+    let {id} = req.query
+    try {
+        let article = await blogdata.findById(id)
+        .populate({
+            path:'author',
+            select:('-password')
+        })
+        res.json({
+            code:200,
+            msg:'success',
+            data:article
+        })
+    } catch (error) {
+        res.json({
+            code:400,
+            msg:'error'
+        })
+    }
+})
+
+
+
+module.exports = router

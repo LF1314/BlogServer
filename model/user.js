@@ -16,7 +16,15 @@ var userSchema = new mongoose.Schema({
        blogs:{
            type:Array,
            default:[]
-       }
+       },
+       fans:{
+        type:Array,
+        default:[]
+         },
+         follows:{
+            type:Array,
+            default:[]
+        },
   },{
       versionKey:false
   });

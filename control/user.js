@@ -54,6 +54,7 @@ router.post('/login',async(req,res,next)=>{
                     code:200,
                     msg:'登陆成功',
                     data:{
+                        id:userd._id,
                         username:userd.username,
                         avatar:userd.avatar,
                         creatime:userd.creatime

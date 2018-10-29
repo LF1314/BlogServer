@@ -4,6 +4,11 @@ const mongoose = require('mongoose')
 var blogSchema = new mongoose.Schema({
        creatime:String,
        content:String,
+       linuxtime:String,
+       type:{
+          type:String,
+          default:'0'
+       },
        corver:{
            type:String,
            required:true
