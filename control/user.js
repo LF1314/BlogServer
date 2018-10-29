@@ -47,18 +47,15 @@ router.post('/login',async(req,res,next)=>{
     } = req.body
     try {
         let userd = await userdata.findOne({username:username})
+         
         if(userd){
             if(password == userd.password){
                 req.session.user = userd
+                userd.password =null
                 res.json({
                     code:200,
                     msg:'登陆成功',
-                    data:{
-                        id:userd._id,
-                        username:userd.username,
-                        avatar:userd.avatar,
-                        creatime:userd.creatime
-                    }
+                    data:userd
                 })
             }else{
                 res.json({
@@ -95,5 +92,43 @@ router.get('/logout',(req,res,next)=>{
             msg:'用户身份已过期'
         })
     }
+})
+
+//获取用户粉丝列表
+router.get('/fans',async(req,res,next)=>{
+    let { id } = req.query
+    try {
+        let userinfo = await userdata.findById({_id:id})
+        let fans =  userinfo.fans
+        let fanlist =[]
+        let i = 0
+        console.log(fans)
+          async function getfans(i) {
+              let id = fans[i]
+              let fan = await userdata.findById(id)
+              .select('-password')
+              fanlist.push(fan)
+              if(i<fans.length-1){
+                  i ++
+                  getfans(i)
+              }else{
+                res.json({
+                    code:200,
+                    msg:'success',
+                    data:fanlist
+                })
+                  return false
+              }
+          }
+          getfans(i)
+      
+        
+    } catch (error) {
+        res.json({
+            code:400,
+            msg:'error'
+        })
+    }
+
 })
 module.exports = router

@@ -89,7 +89,25 @@ router.get('/detail',async(req,res,next)=>{
         })
     }
 })
+//修改文章阅读数量
+router.get('/looknum',async(req,res,next)=>{
 
+    let { id } = req.query
+
+    try {
+        let data = await blogdata.update({_id:id},{$inc:{looknum:1}})
+        res.json({
+            code:200,
+            msg:'sucess',
+            data
+        })
+    } catch (error) {
+        res.json({
+            code:200,
+            msg:'error'
+        })
+    }
+})
 
 
 module.exports = router
