@@ -5,6 +5,7 @@ const userRouter = require('../control/user')
 const blogRouter = require('../control/blog')
 const commentRouter = require('../control/comments')
 const fanRouter = require('../control/fans')
+const chatRouter = require('../control/chat')
 /* GET home page. */
 // 获取轮播图
 router.use('/banner',bannerRouter)
@@ -19,4 +20,7 @@ router.use('/comment',commentRouter)
 
 //关注
 router.use('/fan',fanRouter)
+//聊天
+
+router.use('/chat',chatRouter)
 module.exports = router;
