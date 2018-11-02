@@ -8,6 +8,7 @@ const fanRouter = require('../control/fans')
 const chatRouter = require('../control/chat')
 /* GET home page. */
 // 获取轮播图
+
 router.use('/banner',bannerRouter)
 //用户注册
 router.use('/user',userRouter)
@@ -23,4 +24,8 @@ router.use('/fan',fanRouter)
 //聊天
 
 router.use('/chat',chatRouter)
+//渲染客户端页面
+router.get('/',(req,res)=>{
+    res.render('index')
+})
 module.exports = router;
