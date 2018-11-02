@@ -6,6 +6,7 @@ const auth = require('../control/auth')
 
 const chatdata = require('../model/chat')
 
+const app = require('../bin/www')
 //用户发起聊天
 //添加公用聊天室 
 router.post('/add',auth,async(req,res,next)=>{
@@ -21,6 +22,14 @@ router.post('/add',auth,async(req,res,next)=>{
         .populate({
             path:'from',
             select:('-password')
+        })
+        app.io.on('connection',function(socket){
+            socket.on('chat',(data)=>{
+                 console.log(data)
+               })
+               data ='有人发了聊天信息'
+               socket.emit('chat',data)         
+            // console.log(io.emit)
         })
         res.json({
             code:200,
@@ -48,7 +57,6 @@ router.get("/",async(req,res,next)=>{
             path:'from',
             select:('-password')
         })
-
         res.json({
             code:200,
             data:chatlist

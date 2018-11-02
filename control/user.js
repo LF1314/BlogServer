@@ -47,7 +47,6 @@ router.post('/login',async(req,res,next)=>{
     } = req.body
     try {
         let userd = await userdata.findOne({username:username})
-         
         if(userd){
             if(password == userd.password){
                 req.session.user = userd
@@ -78,7 +77,6 @@ router.post('/login',async(req,res,next)=>{
 })
 //退出登录
 router.get('/logout',(req,res,next)=>{
-
     if(req.session.user){
         req.session.user = null
         res.json({
@@ -93,13 +91,18 @@ router.get('/logout',(req,res,next)=>{
         })
     }
 })
-
 //获取用户粉丝列表
 router.get('/fans',async(req,res,next)=>{
     let { id } = req.query
     try {
         let userinfo = await userdata.findById({_id:id})
         let fans =  userinfo.fans
+        if(fans.length == 0){
+            res.json({
+                code:400,
+                msg:'你还没有粉丝哦！'
+            })
+        }
         let fanlist =[]
         let i = 0
         console.log(fans)
@@ -120,15 +123,12 @@ router.get('/fans',async(req,res,next)=>{
                   return false
               }
           }
-          getfans(i)
-      
-        
+          getfans(i)    
     } catch (error) {
         res.json({
             code:400,
             msg:'error'
         })
     }
-
 })
 module.exports = router
