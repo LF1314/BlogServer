@@ -6,6 +6,7 @@ const blogRouter = require('../control/blog')
 const commentRouter = require('../control/comments')
 const fanRouter = require('../control/fans')
 const chatRouter = require('../control/chat')
+const bookRouter = require('../control/book')
 /* GET home page. */
 // 获取轮播图
 
@@ -28,4 +29,6 @@ router.use('/chat',chatRouter)
 router.get('/',(req,res)=>{
     res.render('index')
 })
+//书屋有关的路由
+router.use('/book',bookRouter)
 module.exports = router;
