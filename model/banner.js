@@ -3,7 +3,11 @@ const mongoose = require('mongoose')
 
 var bannerSchema = new mongoose.Schema({
     title: String,
-    imgurl:String
+    imgurl:String,
+    articleid:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'blogs'
+    }
   },{
       versionKey:false
   });
