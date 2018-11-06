@@ -48,11 +48,10 @@ router.post('/add',auth,async(req,res,next)=>{
 
 //查询最新的文章
 router.get('/new',async(req,res,next)=>{
-
    try {
        let hotarticle = await blogdata.find()
        .sort({_id:-1})
-       .limit(6)
+       .limit(10)
        res.json({
            code:200,
            msg:'success',
@@ -66,7 +65,33 @@ router.get('/new',async(req,res,next)=>{
        })
    }
 })
-
+//获取热门文章
+router.get('/hot',async(req,res,next)=>{
+    let{pn =1,size = 10} = req.query
+    pn =parseInt(pn)
+    size = parseInt(size)
+    try {
+        let hotlist =await blogdata.find()
+        .sort({looknum:-1})
+        .skip((pn-1)*size)
+        .limit(size)
+        .populate({
+            path:'author',
+            select:('-password')
+        })
+        
+        res.json({
+            code:200,
+            msg:'success',
+            data:hotlist
+        })
+    } catch (error) {
+       res.json({
+           code:400,
+           msg:'error'
+       }) 
+    }
+})
 //获取文章详情
 router.get('/detail',async(req,res,next)=>{
 
@@ -108,6 +133,31 @@ router.get('/looknum',async(req,res,next)=>{
         })
     }
 })
-
+//根据分类获取文章
+router.get('/type',async(req,res,next)=>{
+    let {type ='0',pn=1,size=10} = req.query
+    pn = parseInt(pn)
+    size = parseInt(size)
+    try {
+        let bloglist = await blogdata.find({type:type})
+        .sort({looknum:-1})
+        .skip((pn-1)*size)
+        .limit(size)
+        .populate({
+            path:'author',
+            select:('-password')
+        })
+        res.json({
+            code:200,
+            msg:'success',
+            data:bloglist
+        })
+    } catch (error) {
+        res.json({
+            code:400,
+            msg:error
+        })
+    }
+})
 
 module.exports = router
