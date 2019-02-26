@@ -37,6 +37,7 @@ router.get('/type',(req,res,next)=>{
 //获取书籍目录列表
  router.get('/category',(req,res,next)=>{   
     let { href } = req.query
+    console.log(href)
     request(`${href}/content`,function(err,response,body){
         if(err){
             res.json({
@@ -44,8 +45,10 @@ router.get('/type',(req,res,next)=>{
                 msg:'请求超时'
             })
         }
+        console.log(body)
         const $ = cheerio.load(body)
         let category = $('ul').html()
+     
         let arr = category.split('</li>')
         let newcate = arr.map(el=>{
             let obj ={}

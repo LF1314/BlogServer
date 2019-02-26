@@ -15,3 +15,18 @@ var bannerSchema = new mongoose.Schema({
   const bannerdata = mongoose.model('banners',bannerSchema)
 
   module.exports =bannerdata
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
