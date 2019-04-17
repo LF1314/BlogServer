@@ -8,6 +8,8 @@ const fanRouter = require('../control/fans')
 const chatRouter = require('../control/chat')
 const bookRouter = require('../control/book')
 const typeRouter = require('../control/type')
+
+const aichart = require('../control/aichart')
 /* GET home page. */
 // 获取轮播图
 router.use('/banner',bannerRouter)
@@ -32,4 +34,7 @@ router.get('/',(req,res)=>{
 router.use('/book',bookRouter)
 //分类路由
 router.use('/type',typeRouter)
+
+// ai聊天
+router.use('/chartAi',aichart)
 module.exports = router;
