@@ -1,4 +1,25 @@
-<!DOCTYPE html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>myblogclient</title><link rel=stylesheet href=./static/reset.css><link href=/static/css/app.c8a1dccc37025fd7ad9fd5044749e067.css rel=stylesheet></head><body><div id=app></div><script>!function () {
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>nest</title>
+    <!-- canvas-nest.js -->
+    <!-- https://github.com/hustcc/canvas-nest.js -->
+</head>
+
+<body>
+    <!-- <script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="https://cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script> -->
+    <script>
+        /**
+         * Copyright (c) 2016 hustcc
+         * License: MIT
+         * Version: %%GULP_INJECT_VERSION%%
+         * GitHub: https://github.com/hustcc/canvas-nest.js
+         **/
+        ! function () {
             //封装方法，压缩之后减少文件大小
             function get_attribute(node, attr, default_value) {
                 return node.getAttribute(attr) || default_value;
@@ -15,10 +36,9 @@
                 return {
                     l: script_len, //长度，用于生成id用
                     z: get_attribute(script, "zIndex", -1), //z-index
-                    o: get_attribute(script, "opacity", 0.8), //opacity
-                    c: get_attribute(script, "color", "6,14,3"), //color
-                    n: get_attribute(script, "count", 99) ,//count
-                    bg:get_attribute(script,'backgrounColor',"rgba(0,0,0,.3)")
+                    o: get_attribute(script, "opacity", 0.5), //opacity
+                    c: get_attribute(script, "color", "0,0,0"), //color
+                    n: get_attribute(script, "count", 99) //count
                 };
             }
             //设置canvas的高宽
@@ -28,7 +48,6 @@
                     canvas_height = the_canvas.height = window.innerHeight || document.documentElement.clientHeight ||
                     document.body.clientHeight;
             }
-        
             //绘制过程
             function draw_canvas() {
                 context.clearRect(0, 0, canvas_width, canvas_height);
@@ -53,8 +72,8 @@
                                 r.y -= 0.03 * y_dist), //靠近的时候加速
                                 d = (e.max - dist) / e.max,
                                 context.beginPath(),
-                                context.lineWidth = 1.2*d,
-                                context.strokeStyle = "rgba(" + config.c + "," + (d + 0.1) + ")",
+                                context.lineWidth = d / 2,
+                                context.strokeStyle = "rgba(" + config.c + "," + (d + 0.2) + ")",
                                 context.moveTo(r.x, r.y),
                                 context.lineTo(e.x, e.y),
                                 context.stroke());
@@ -80,15 +99,11 @@
                 },
                 all_array;
             the_canvas.id = canvas_id;
-            the_canvas.style.cssText = "position:fixed;top:0;left:0;background-color:rgba(0,0,28,.5);z-index:" + config.z + ";opacity:" + config.o;
+            the_canvas.style.cssText = "position:fixed;top:0;left:0;z-index:" + config.z + ";opacity:" + config.o;
             get_by_tagname("body")[0].appendChild(the_canvas);
             //初始化画布大小
             set_canvas_size();
-
-            window.onresize=function(){
-              set_canvas_size()
-            }
-            
+            window.onresize = set_canvas_size;
             //当时鼠标位置存储，离开的时候，释放当前位置信息
             window.onmousemove = function (e) {
                 e = e || window.event;
@@ -98,17 +113,6 @@
                 current_point.x = null;
                 current_point.y = null;
             };
-            // 兼容移动端
-         document.body.ontouchmove=function (e) {
-                e = e || window.event;
-                current_point.x = e.clientX;
-                current_point.y = e.clientY;
-            }, document.body.ontouchend = function () {
-                current_point.x = null;
-                current_point.y = null;
-            };
-
-
             //随机生成config.n条线位置信息
             for (var random_points = [], i = 0; config.n > i; i++) {
                 var x = random() * canvas_width, //随机位置
@@ -129,4 +133,8 @@
             setTimeout(function () {
                 frame_func(draw_canvas);
             }, 100);
-        }();</script><script type=text/javascript src=/static/js/manifest.36717177a29cc0ea6788.js></script><script type=text/javascript src=/static/js/app.185c45d316e72667f42a.js></script></body></html>
+        }();
+    </script>
+</body>
+
+</html>
