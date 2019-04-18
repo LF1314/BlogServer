@@ -46,7 +46,7 @@ router.post('/add',auth,async(req,res,next)=>{
 //获取聊天信息 私聊，群聊，世界
 
 router.get("/",async(req,res,next)=>{
-    let{pn =1 ,to,size=20} = req.query
+    let{pn =1 ,to,size=20000} = req.query
            pn  = parseInt(pn)
           size = parseInt(size)
     try {
